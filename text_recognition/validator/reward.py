@@ -19,7 +19,7 @@
 import torch
 from typing import List
 
-from template.protocol import TextRecognitionSynapse
+from text_recognition.protocol import TextRecognitionSynapse
 
 
 def reward(query: str, response: str) -> float:

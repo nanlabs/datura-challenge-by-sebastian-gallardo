@@ -2,8 +2,8 @@ import pytest
 import asyncio
 import bittensor as bt
 
-from template.mock import MockDendrite, MockMetagraph, MockSubtensor
-from template.protocol import TextRecognitionSynapse
+from text_recognition.mock import MockDendrite, MockMetagraph, MockSubtensor
+from text_recognition.protocol import TextRecognitionSynapse
 
 
 @pytest.mark.parametrize("netuid", [1, 2, 3])

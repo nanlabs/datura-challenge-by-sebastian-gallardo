@@ -1,7 +1,7 @@
 # The MIT License (MIT)
-# Copyright © 2021 Yuma Rao
-# Copyright © 2023 Opentensor Foundation
-# Copyright © 2023 Opentensor Technologies Inc
+# Copyright © 2023 Yuma Rao
+# TODO(developer): Set your name
+# Copyright © 2023 <your name>
 
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
 # documentation files (the “Software”), to deal in the Software without restriction, including without limitation
@@ -17,31 +17,17 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
 
-import bittensor as bt
-from typing import List, Optional, Union, Any, Dict
-from bittensor.subnets import SubnetsAPI
-import numpy as np
+__version__ = "1.0.0"
+version_split = __version__.split(".")
+__spec_version__ = (
+    (1000 * int(version_split[0]))
+    + (10 * int(version_split[1]))
+    + (1 * int(version_split[2]))
+)
 
-from template.protocol import TextRecognitionSynapse
-
-
-class TextRecognitionAPI(SubnetsAPI):
-    def __init__(self, wallet: "bt.wallet"):
-        super().__init__(wallet)
-        self.netuid = 33
-        self.name = "TextRecognition"
-
-    def prepare_synapse(self, image_input: np.ndarray) -> TextRecognitionSynapse:
-        synapse = TextRecognitionSynapse()
-        synapse.image_input = image_input
-        return synapse
-
-    def process_responses(
-        self, responses: List[Union["bt.Synapse", Any]]
-    ) -> List[int]:
-        outputs = []
-        for response in responses:
-            if response.dendrite.status_code != 200:
-                continue
-            return outputs.append(response.text_recognition_output)
-        return outputs
+# Import all submodules.
+from . import protocol
+from . import base
+from . import validator
+from . import api
+from .subnet_links import SUBNET_LINKS

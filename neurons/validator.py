@@ -22,12 +22,12 @@ import time
 # Bittensor
 import bittensor as bt
 
-# Bittensor Validator Template:
-import template
-from template.validator import forward
+# Bittensor Validator:
+import text_recognition
+from text_recognition.validator import forward
 
 # import base validator class which takes care of most of the boilerplate
-from template.base.validator import BaseValidatorNeuron
+from text_recognition.base.validator import BaseValidatorNeuron
 
 class Validator(BaseValidatorNeuron):
     """

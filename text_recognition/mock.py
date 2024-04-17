@@ -6,7 +6,7 @@ import bittensor as bt
 
 from typing import List
 
-from template.protocol import TextRecognitionSynapse
+from text_recognition.protocol import TextRecognitionSynapse
 
 class MockSubtensor(bt.MockSubtensor):
     def __init__(self, netuid, n=16, wallet=None, network="mock"):

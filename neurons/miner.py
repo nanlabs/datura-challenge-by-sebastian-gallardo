@@ -21,11 +21,11 @@ import typing
 import bittensor as bt
 
 # Bittensor Miner Template:
-import template
+import text_recognition
 
 # import base miner class which takes care of most of the boilerplate
-from template.base.miner import BaseMinerNeuron
-from template.utils import image_processing
+from text_recognition.base.miner import BaseMinerNeuron
+from text_recognition.utils import image_processing
 
 
 class Miner(BaseMinerNeuron):
@@ -41,15 +41,15 @@ class Miner(BaseMinerNeuron):
         super(Miner, self).__init__(config=config)
 
     async def forward(
-        self, synapse: template.protocol.TextRecognitionSynapse
-    ) -> template.protocol.TextRecognitionSynapse:
+        self, synapse: text_recognition.protocol.TextRecognitionSynapse
+    ) -> text_recognition.protocol.TextRecognitionSynapse:
         
         text = image_processing.get_text(synapse.image_input)
         synapse.text_recognition_output = text
         return synapse
 
     async def blacklist(
-        self, synapse: template.protocol.TextRecognitionSynapse
+        self, synapse: text_recognition.protocol.TextRecognitionSynapse
     ) -> typing.Tuple[bool, str]:
         """
         Determines whether an incoming request should be blacklisted and thus ignored. Your implementation should
@@ -60,7 +60,7 @@ class Miner(BaseMinerNeuron):
         requests before they are deserialized to avoid wasting resources on requests that will be ignored.
 
         Args:
-            synapse (template.protocol.TextRecognitionSynapse): A synapse object constructed from the headers of the incoming request.
+            synapse (text_recognition.protocol.TextRecognitionSynapse): A synapse object constructed from the headers of the incoming request.
 
         Returns:
             Tuple[bool, str]: A tuple containing a boolean indicating whether the synapse's hotkey is blacklisted,
@@ -105,7 +105,7 @@ class Miner(BaseMinerNeuron):
         )
         return False, "Hotkey recognized!"
 
-    async def priority(self, synapse: template.protocol.TextRecognitionSynapse) -> float:
+    async def priority(self, synapse: text_recognition.protocol.TextRecognitionSynapse) -> float:
         """
         The priority function determines the order in which requests are handled. More valuable or higher-priority
         requests are processed before others. You should design your own priority mechanism with care.
@@ -113,7 +113,7 @@ class Miner(BaseMinerNeuron):
         This implementation assigns priority to incoming requests based on the calling entity's stake in the metagraph.
 
         Args:
-            synapse (template.protocol.TextRecognitionSynapse): The synapse object that contains metadata about the incoming request.
+            synapse (text_recognition.protocol.TextRecognitionSynapse): The synapse object that contains metadata about the incoming request.
 
         Returns:
             float: A priority score derived from the stake of the calling entity.

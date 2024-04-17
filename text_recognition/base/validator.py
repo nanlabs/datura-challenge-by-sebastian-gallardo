@@ -28,9 +28,9 @@ import bittensor as bt
 from typing import List
 from traceback import print_exception
 
-from template.base.neuron import BaseNeuron
-from template.mock import MockDendrite
-from template.utils.config import add_validator_args
+from text_recognition.base.neuron import BaseNeuron
+from text_recognition.mock import MockDendrite
+from text_recognition.utils.config import add_validator_args
 
 
 class BaseValidatorNeuron(BaseNeuron):

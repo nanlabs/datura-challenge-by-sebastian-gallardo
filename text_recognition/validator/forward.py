@@ -19,10 +19,10 @@
 import random
 import bittensor as bt
 
-from template.protocol import TextRecognitionSynapse
-from template.utils import image_processing
-from template.validator.reward import get_rewards
-from template.utils.uids import get_random_uids
+from text_recognition.protocol import TextRecognitionSynapse
+from text_recognition.utils import image_processing
+from text_recognition.validator.reward import get_rewards
+from text_recognition.utils.uids import get_random_uids
 
 
 def get_sample():

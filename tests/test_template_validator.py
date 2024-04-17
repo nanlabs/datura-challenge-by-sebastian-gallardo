@@ -24,15 +24,15 @@ import bittensor as bt
 from neurons.validator import Neuron as Validator
 from neurons.miner import Neuron as Miner
 
-from template.protocol import TextRecognitionSynapse
-from template.utils.image_processing import load_image
-from template.validator.forward import forward
-from template.utils.uids import get_random_uids
-from template.validator.reward import get_rewards
-from template.base.validator import BaseValidatorNeuron
+from text_recognition.protocol import TextRecognitionSynapse
+from text_recognition.utils.image_processing import load_image
+from text_recognition.validator.forward import forward
+from text_recognition.utils.uids import get_random_uids
+from text_recognition.validator.reward import get_rewards
+from text_recognition.base.validator import BaseValidatorNeuron
 
 
-class TemplateValidatorNeuronTestCase(unittest.TestCase):
+class ValidatorNeuronTestCase(unittest.TestCase):
     """
     This class contains unit tests for the RewardEvent classes.
 
