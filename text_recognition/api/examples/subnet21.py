@@ -33,7 +33,8 @@ try:
 except:
     storage_url = "https://github.com/ifrit98/storage-subnet"
     bt.logging.error(
-        f"Storage Subnet 21 not installed. Please visit: {storage_url} and install the package to use this example."
+        f"Storage Subnet 21 not installed. Please visit: {
+            storage_url} and install the package to use this example."
     )
 
 
@@ -92,7 +93,8 @@ class StoreUserAPI(SubnetsAPI):
             )
         else:
             bt.logging.error(
-                f"Failed to store data. Response failure codes & messages {failure_modes}"
+                f"Failed to store data. Response failure codes & messages {
+                    failure_modes}"
             )
             stored_cid = ""
 

@@ -1,7 +1,6 @@
 # The MIT License (MIT)
 # Copyright © 2023 Yuma Rao
-# TODO(developer): Set your name
-# Copyright © 2023 <your name>
+# Copyright © 2024 Sebastian Gallardo
 
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
 # documentation files (the “Software”), to deal in the Software without restriction, including without limitation
@@ -17,11 +16,31 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
 
+import random
 import bittensor as bt
 
-from template.protocol import Dummy
-from template.validator.reward import get_rewards
-from template.utils.uids import get_random_uids
+from text_recognition.protocol import TextRecognitionSynapse
+from text_recognition.utils import image_processing
+from text_recognition.validator.reward import get_rewards
+from text_recognition.utils.uids import get_random_uids
+
+
+def get_sample():
+    '''
+    Returns a random sample from the list of samples.
+    This could be improved by generating a random image and adding noise to increase difficulty.
+    '''
+    samples = [
+        {
+            "filename": "astronaut.jpg",
+            "expected_text": "ASTRONAUT"
+        },
+        {
+            "filename": "memory.jpg",
+            "expected_text": "MEMORY"
+        },
+    ]
+    return random.choice(samples)
 
 
 async def forward(self):
@@ -34,27 +53,24 @@ async def forward(self):
         self (:obj:`bittensor.neuron.Neuron`): The neuron object which contains all the necessary state for the validator.
 
     """
-    # TODO(developer): Define how the validator selects a miner to query, how often, etc.
+    sample = get_sample()
+    image_input = image_processing.load_image(sample["filename"])
+
     # get_random_uids is an example method, but you can replace it with your own.
     miner_uids = get_random_uids(self, k=self.config.neuron.sample_size)
 
     # The dendrite client queries the network.
-    responses = await self.dendrite(
-        # Send the query to selected miner axons in the network.
+    responses = self.dendrite.query(
         axons=[self.metagraph.axons[uid] for uid in miner_uids],
-        # Construct a dummy query. This simply contains a single integer.
-        synapse=Dummy(dummy_input=self.step),
-        # All responses have the deserialize function called on them before returning.
-        # You are encouraged to define your own deserialization function.
-        deserialize=True,
+        synapse=TextRecognitionSynapse(image_input),
+        deserialize=False,
     )
 
     # Log the results for monitoring purposes.
     bt.logging.info(f"Received responses: {responses}")
 
-    # TODO(developer): Define how the validator scores responses.
-    # Adjust the scores based on responses from miners.
-    rewards = get_rewards(self, query=self.step, responses=responses)
+    rewards = get_rewards(
+        self, expected_text=sample["expected_text"], responses=responses)
 
     bt.logging.info(f"Scored responses: {rewards}")
     # Update the scores based on the rewards. You may want to define your own update_scores function for custom behavior.

@@ -23,10 +23,10 @@ import bittensor as bt
 from abc import ABC, abstractmethod
 
 # Sync calls set weights and also resyncs the metagraph.
-from template.utils.config import check_config, add_args, config
-from template.utils.misc import ttl_get_block
-from template import __spec_version__ as spec_version
-from template.mock import MockSubtensor, MockMetagraph
+from text_recognition.utils.config import check_config, add_args, config
+from text_recognition.utils.misc import ttl_get_block
+from text_recognition import __spec_version__ as spec_version
+from text_recognition.mock import MockSubtensor, MockMetagraph
 
 
 class BaseNeuron(ABC):
@@ -104,7 +104,8 @@ class BaseNeuron(ABC):
             self.wallet.hotkey.ss58_address
         )
         bt.logging.info(
-            f"Running neuron on subnet: {self.config.netuid} with uid {self.uid} using network: {self.subtensor.chain_endpoint}"
+            f"Running neuron on subnet: {self.config.netuid} with uid {
+                self.uid} using network: {self.subtensor.chain_endpoint}"
         )
         self.step = 0
 
@@ -139,7 +140,8 @@ class BaseNeuron(ABC):
             hotkey_ss58=self.wallet.hotkey.ss58_address,
         ):
             bt.logging.error(
-                f"Wallet: {self.wallet} is not registered on netuid {self.config.netuid}."
+                f"Wallet: {self.wallet} is not registered on netuid {
+                    self.config.netuid}."
                 f" Please register the hotkey using `btcli subnets register` before trying again"
             )
             exit()

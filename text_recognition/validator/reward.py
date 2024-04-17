@@ -1,7 +1,6 @@
 # The MIT License (MIT)
 # Copyright © 2023 Yuma Rao
-# TODO(developer): Set your name
-# Copyright © 2023 <your name>
+# Copyright © 2024 Sebastian Gallardo
 
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
 # documentation files (the “Software”), to deal in the Software without restriction, including without limitation
@@ -20,23 +19,25 @@
 import torch
 from typing import List
 
+from text_recognition.protocol import TextRecognitionSynapse
 
-def reward(query: int, response: int) -> float:
+
+def reward(query: str, response: str) -> float:
     """
-    Reward the miner response to the dummy request. This method returns a reward
+    Reward the miner response to the request. This method returns a reward
     value for the miner, which is used to update the miner's score.
 
     Returns:
     - float: The reward value for the miner.
     """
-
-    return 1.0 if response == query * 2 else 0
+    # TODO: Improve this by checking the error rate.
+    return 1.0 if response == query else 0
 
 
 def get_rewards(
     self,
-    query: int,
-    responses: List[float],
+    expected_text: str,
+    responses: List[TextRecognitionSynapse],
 ) -> torch.FloatTensor:
     """
     Returns a tensor of rewards for the given query and responses.
@@ -50,5 +51,6 @@ def get_rewards(
     """
     # Get all the reward results by iteratively calling your reward() function.
     return torch.FloatTensor(
-        [reward(query, response) for response in responses]
+        [reward(expected_text, response.text_recognition_output)
+         for response in responses]
     ).to(self.device)
