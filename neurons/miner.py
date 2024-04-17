@@ -43,7 +43,7 @@ class Miner(BaseMinerNeuron):
     async def forward(
         self, synapse: text_recognition.protocol.TextRecognitionSynapse
     ) -> text_recognition.protocol.TextRecognitionSynapse:
-        
+
         text = image_processing.get_text(synapse.image_input)
         synapse.text_recognition_output = text
         return synapse
@@ -96,7 +96,8 @@ class Miner(BaseMinerNeuron):
             # If the config is set to force validator permit, then we should only allow requests from validators.
             if not self.metagraph.validator_permit[uid]:
                 bt.logging.warning(
-                    f"Blacklisting a request from non-validator hotkey {synapse.dendrite.hotkey}"
+                    f"Blacklisting a request from non-validator hotkey {
+                        synapse.dendrite.hotkey}"
                 )
                 return True, "Non-validator hotkey"
 
@@ -125,7 +126,7 @@ class Miner(BaseMinerNeuron):
         Example priority logic:
         - A higher stake results in a higher priority value.
         """
-        
+
         caller_uid = self.metagraph.hotkeys.index(
             synapse.dendrite.hotkey
         )  # Get the caller index.

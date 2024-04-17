@@ -42,6 +42,7 @@ def get_sample():
     ]
     return random.choice(samples)
 
+
 async def forward(self):
     """
     The forward function is called by the validator every time step.
@@ -68,7 +69,8 @@ async def forward(self):
     # Log the results for monitoring purposes.
     bt.logging.info(f"Received responses: {responses}")
 
-    rewards = get_rewards(self, expected_text=sample["expected_text"], responses=responses)
+    rewards = get_rewards(
+        self, expected_text=sample["expected_text"], responses=responses)
 
     bt.logging.info(f"Scored responses: {rewards}")
     # Update the scores based on the rewards. You may want to define your own update_scores function for custom behavior.

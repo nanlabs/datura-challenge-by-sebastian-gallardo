@@ -8,6 +8,7 @@ from typing import List
 
 from text_recognition.protocol import TextRecognitionSynapse
 
+
 class MockSubtensor(bt.MockSubtensor):
     def __init__(self, netuid, n=16, wallet=None, network="mock"):
         super().__init__(network=network)

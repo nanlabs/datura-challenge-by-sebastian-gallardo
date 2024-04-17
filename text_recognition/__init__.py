@@ -17,6 +17,11 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
 
+from .subnet_links import SUBNET_LINKS
+from . import api
+from . import validator
+from . import base
+from . import protocol
 __version__ = "1.0.0"
 version_split = __version__.split(".")
 __spec_version__ = (
@@ -26,8 +31,3 @@ __spec_version__ = (
 )
 
 # Import all submodules.
-from . import protocol
-from . import base
-from . import validator
-from . import api
-from .subnet_links import SUBNET_LINKS

@@ -30,7 +30,7 @@ def reward(query: str, response: str) -> float:
     Returns:
     - float: The reward value for the miner.
     """
-    #TODO: Improve this by checking the error rate.
+    # TODO: Improve this by checking the error rate.
     return 1.0 if response == query else 0
 
 
@@ -51,5 +51,6 @@ def get_rewards(
     """
     # Get all the reward results by iteratively calling your reward() function.
     return torch.FloatTensor(
-        [reward(expected_text, response.text_recognition_output) for response in responses]
+        [reward(expected_text, response.text_recognition_output)
+         for response in responses]
     ).to(self.device)

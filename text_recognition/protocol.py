@@ -21,8 +21,9 @@ import typing
 import numpy as np
 import bittensor as bt
 
+
 class TextRecognitionSynapse(bt.Synapse):
-    
+
     # Required request input, filled by sending dendrite caller.
     image_input: np.ndarray
 
@@ -30,5 +31,5 @@ class TextRecognitionSynapse(bt.Synapse):
     text_recognition_output: typing.Optional[str] = None
 
     def deserialize(self) -> int:
-        
+
         return self.text_recognition_output

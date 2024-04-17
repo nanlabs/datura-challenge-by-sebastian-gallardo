@@ -104,7 +104,8 @@ class BaseNeuron(ABC):
             self.wallet.hotkey.ss58_address
         )
         bt.logging.info(
-            f"Running neuron on subnet: {self.config.netuid} with uid {self.uid} using network: {self.subtensor.chain_endpoint}"
+            f"Running neuron on subnet: {self.config.netuid} with uid {
+                self.uid} using network: {self.subtensor.chain_endpoint}"
         )
         self.step = 0
 
@@ -139,7 +140,8 @@ class BaseNeuron(ABC):
             hotkey_ss58=self.wallet.hotkey.ss58_address,
         ):
             bt.logging.error(
-                f"Wallet: {self.wallet} is not registered on netuid {self.config.netuid}."
+                f"Wallet: {self.wallet} is not registered on netuid {
+                    self.config.netuid}."
                 f" Please register the hotkey using `btcli subnets register` before trying again"
             )
             exit()

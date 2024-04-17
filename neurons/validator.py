@@ -29,6 +29,7 @@ from text_recognition.validator import forward
 # import base validator class which takes care of most of the boilerplate
 from text_recognition.base.validator import BaseValidatorNeuron
 
+
 class Validator(BaseValidatorNeuron):
     """
     Your validator neuron class. You should use this class to define your validator's behavior. In particular, you should replace the forward function with your own logic.
@@ -53,7 +54,7 @@ class Validator(BaseValidatorNeuron):
         - Rewarding the miners
         - Updating the scores
         """
-        
+
         return await forward(self)
 
 
