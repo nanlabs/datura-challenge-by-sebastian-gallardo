@@ -6,6 +6,7 @@ import bittensor as bt
 
 from typing import List
 
+from template.protocol import TextRecognitionSynapse
 
 class MockSubtensor(bt.MockSubtensor):
     def __init__(self, netuid, n=16, wallet=None, network="mock"):
@@ -62,7 +63,7 @@ class MockDendrite(bt.dendrite):
     async def forward(
         self,
         axons: List[bt.axon],
-        synapse: bt.Synapse = bt.Synapse(),
+        synapse: TextRecognitionSynapse = TextRecognitionSynapse(),
         timeout: float = 12,
         deserialize: bool = True,
         run_async: bool = True,
@@ -86,13 +87,12 @@ class MockDendrite(bt.dendrite):
                 if process_time < timeout:
                     s.dendrite.process_time = str(time.time() - start_time)
                     # Update the status code and status message of the dendrite to match the axon
-                    # TODO (developer): replace with your own expected synapse data
-                    s.dummy_output = s.dummy_input * 2
+                    s.text_recognition_output = "astronaut"
                     s.dendrite.status_code = 200
                     s.dendrite.status_message = "OK"
                     synapse.dendrite.process_time = str(process_time)
                 else:
-                    s.dummy_output = 0
+                    s.text_recognition_output = ""
                     s.dendrite.status_code = 408
                     s.dendrite.status_message = "Timeout"
                     synapse.dendrite.process_time = str(timeout)

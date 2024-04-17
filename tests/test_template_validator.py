@@ -24,7 +24,8 @@ import bittensor as bt
 from neurons.validator import Neuron as Validator
 from neurons.miner import Neuron as Miner
 
-from template.protocol import Dummy
+from template.protocol import TextRecognitionSynapse
+from template.utils.image_processing import load_image
 from template.validator.forward import forward
 from template.utils.uids import get_random_uids
 from template.validator.reward import get_rewards
@@ -50,43 +51,30 @@ class TemplateValidatorNeuronTestCase(unittest.TestCase):
         self.miner_uids = get_random_uids(self, k=10)
 
     def test_run_single_step(self):
-        # TODO: Test a single step
         pass
 
     def test_sync_error_if_not_registered(self):
-        # TODO: Test that the validator throws an error if it is not registered on metagraph
         pass
 
     def test_forward(self):
-        # TODO: Test that the forward function returns the correct value
-        pass
-
-    def test_dummy_responses(self):
-        # TODO: Test that the dummy responses are correctly constructed
 
         responses = self.neuron.dendrite.query(
-            # Send the query to miners in the network.
             axons=[
                 self.neuron.metagraph.axons[uid] for uid in self.miner_uids
             ],
-            # Construct a dummy query.
-            synapse=Dummy(dummy_input=self.neuron.step),
-            # All responses have the deserialize function called on them before returning.
-            deserialize=True,
+            synapse=TextRecognitionSynapse(image_input=load_image("astronaut.jpg")),
+            deserialize=False,
         )
 
         for i, response in enumerate(responses):
-            self.assertEqual(response, self.neuron.step * 2)
+            self.assertEqual(response, "ASTRONAUT")
 
     def test_reward(self):
-        # TODO: Test that the reward function returns the correct value
         responses = self.dendrite.query(
             # Send the query to miners in the network.
             axons=[self.metagraph.axons[uid] for uid in self.miner_uids],
-            # Construct a dummy query.
-            synapse=Dummy(dummy_input=self.neuron.step),
-            # All responses have the deserialize function called on them before returning.
-            deserialize=True,
+            synapse=TextRecognitionSynapse(image_input=load_image("astronaut.jpg")),
+            deserialize=False,
         )
 
         rewards = get_rewards(self.neuron, responses)
@@ -94,21 +82,22 @@ class TemplateValidatorNeuronTestCase(unittest.TestCase):
         self.assertEqual(rewards, expected_rewards)
 
     def test_reward_with_nan(self):
-        # TODO: Test that NaN rewards are correctly sanitized
-        # TODO: Test that a bt.logging.warning is thrown when a NaN reward is sanitized
-        responses = self.dendrite.query(
-            # Send the query to miners in the network.
-            axons=[self.metagraph.axons[uid] for uid in self.miner_uids],
-            # Construct a dummy query.
-            synapse=Dummy(dummy_input=self.neuron.step),
-            # All responses have the deserialize function called on them before returning.
-            deserialize=True,
-        )
+        """
+        Test that NaN rewards are correctly sanitized and a warning is logged.
+        """
+        responses = [
+            TextRecognitionSynapse(text_recognition_output="ASTRONAUT")
+        ] * len(self.miner_uids)
+        rewards = get_rewards(self.validator, responses)
 
-        rewards = get_rewards(self.neuron, responses)
-        expected_rewards = rewards.clone()
-        # Add NaN values to rewards
         rewards[0] = float("nan")
 
-        with self.assertLogs(bt.logging, level="WARNING") as cm:
-            self.neuron.update_scores(rewards, self.miner_uids)
+        with self.assertLogs("bittensor", level="WARNING") as cm:
+            sanitized_rewards = self.validator.sanitize_rewards(rewards)
+            self.assertNotIn(
+                float("nan"), sanitized_rewards, "NaN reward was not sanitized"
+            )
+            self.assertTrue(
+                any("WARNING" in message for message in cm.output),
+                "Expected warning log for NaN reward",
+            )

@@ -19,7 +19,7 @@
 import random
 import bittensor as bt
 
-from template.protocol import Dummy, TextRecognitionSynapse
+from template.protocol import TextRecognitionSynapse
 from template.utils import image_processing
 from template.validator.reward import get_rewards
 from template.utils.uids import get_random_uids
